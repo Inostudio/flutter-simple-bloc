@@ -24,6 +24,10 @@ abstract class BlocBase with ExtensionSubscription {
     }));
   }
 
+  void addWorker<T>(CancelableOperation<T> worker) {
+    _workers.add(worker);
+  }
+
   Future<bool> runWorkerV2<T>({
     @required Future<T> onRun,
     @required Function(T) onResult,
@@ -42,7 +46,7 @@ abstract class BlocBase with ExtensionSubscription {
         result.complete(false);
       },
     );
-    _workers.add(cancelableWorker);
+    addWorker(cancelableWorker);
     cancelableWorker.value.then((value) {
       if (widgetState == WidgetStateType.visible ||
           (forceResult && widgetState != WidgetStateType.destroying)) {
