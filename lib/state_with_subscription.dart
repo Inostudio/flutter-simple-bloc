@@ -15,7 +15,7 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
     super.initState();
     if (initWithSubscription) {
       onCreate();
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
         subscribeNavigatorObserver();
         onStart();
       });
@@ -25,12 +25,12 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
   void subscribeNavigatorObserver() {
     final route = ModalRoute.of(context);
     if (route != null) {
-      getNavigatorObserver().subscribe(this, ModalRoute.of(context));
+      getNavigatorObserver()?.subscribe(this, route);
     }
     onWidgetStateChange(WidgetStateType.visible);
   }
 
-  RouteObserver getNavigatorObserver();
+  RouteObserver? getNavigatorObserver();
 
   /// State is created but BuildContext is still not initialized
   /// Here we can initialize subscriptions
@@ -71,7 +71,7 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
   @mustCallSuper
   void dispose() {
     onWidgetStateChange(WidgetStateType.destroying);
-    getNavigatorObserver().unsubscribe(this);
+    getNavigatorObserver()?.unsubscribe(this);
     super.cancelSubscriptions();
     super.dispose();
   }

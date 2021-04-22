@@ -6,7 +6,7 @@ import 'widget_state_type.dart';
 
 abstract class StateWithBloc<A extends StatefulWidget, B extends BlocBase>
     extends StateWithSubscription<A> {
-  B bloc;
+  B? bloc;
 
   @override
   final initWithSubscription = false;
@@ -16,7 +16,7 @@ abstract class StateWithBloc<A extends StatefulWidget, B extends BlocBase>
     super.initState();
     bloc = BlocProvider.of(context);
     onCreate();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       subscribeNavigatorObserver();
       onStart();
     });

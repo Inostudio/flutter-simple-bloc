@@ -29,9 +29,9 @@ abstract class BlocBase with ExtensionSubscription {
   }
 
   Future<bool> runWorkerV2<T>({
-    @required Future<T> onRun,
-    @required Function(T) onResult,
-    Function(dynamic, StackTrace) onError,
+    required Future<T?> onRun,
+    required Function(T?) onResult,
+    Function(dynamic, StackTrace)? onError,
     bool forceResult = false,
   }) {
     final result = Completer<bool>();
@@ -59,7 +59,7 @@ abstract class BlocBase with ExtensionSubscription {
 
   void dispose() {
     _workers.forEach((worker) {
-      if (worker?.isCanceled == false) {
+      if (worker.isCanceled == false) {
         worker.cancel();
       }
     });

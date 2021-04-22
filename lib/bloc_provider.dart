@@ -4,10 +4,10 @@ import 'bloc_context_base.dart';
 
 class BlocProvider<T extends BlocBase> extends StatefulWidget {
   BlocProvider({
-    @required this.child,
-    @required this.bloc,
-    @required this.blocContext,
-    Key key,
+    required this.child,
+    required this.bloc,
+    required this.blocContext,
+    Key? key,
   }) : super(key: key);
 
   final T bloc;
@@ -17,9 +17,9 @@ class BlocProvider<T extends BlocBase> extends StatefulWidget {
   @override
   _BlocProviderState<T> createState() => _BlocProviderState<T>();
 
-  static T of<T extends BlocBase>(BuildContext context) {
-    final BlocProvider<T> provider = context.findAncestorWidgetOfExactType();
-    return provider.bloc;
+  static T? of<T extends BlocBase>(BuildContext context) {
+    final BlocProvider<T>? provider = context.findAncestorWidgetOfExactType();
+    return provider?.bloc;
   }
 }
 
