@@ -6,7 +6,7 @@ import 'widget_state_type.dart';
 
 abstract class StateWithBloc<A extends StatefulWidget, B extends BlocBase>
     extends StateWithSubscription<A> {
-  B? bloc;
+  late B bloc;
 
   @override
   final initWithSubscription = false;
@@ -14,7 +14,10 @@ abstract class StateWithBloc<A extends StatefulWidget, B extends BlocBase>
   @override
   void initState() {
     super.initState();
-    bloc = BlocProvider.of(context);
+    if (BlocProvider.of(context) == null) {
+      throw Exception("Bloc can't be null!");
+    }
+    bloc = BlocProvider.of(context)!;
     onCreate();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       subscribeNavigatorObserver();
@@ -25,13 +28,12 @@ abstract class StateWithBloc<A extends StatefulWidget, B extends BlocBase>
   @override
   void onWidgetStateChange(WidgetStateType state) {
     super.onWidgetStateChange(state);
-    bloc?.onWidgetStateChange(state);
+    bloc.onWidgetStateChange(state);
   }
 
   @override
   void dispose() {
-    bloc?.onWidgetStateChange(WidgetStateType.destroying);
-    bloc = null;
+    bloc.onWidgetStateChange(WidgetStateType.destroying);
     super.dispose();
   }
 }
