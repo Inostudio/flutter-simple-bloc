@@ -58,13 +58,13 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
   @override
   @protected
   void didPopNext() {
-    widgetState = WidgetStateType.visible;
+    onWidgetStateChange(WidgetStateType.visible);
   }
 
   @override
   @protected
   void didPushNext() {
-    widgetState = WidgetStateType.invisible;
+    onWidgetStateChange(WidgetStateType.invisible);
   }
 
   @override
