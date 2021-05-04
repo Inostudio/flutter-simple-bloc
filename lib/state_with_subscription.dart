@@ -1,5 +1,7 @@
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 import 'extension/extension_subscription.dart';
+import 'navigation_observer.dart';
 import 'widget_state_type.dart';
 
 abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
@@ -8,14 +10,14 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
   final initWithSubscription = true;
 
   @protected
-  WidgetStateType widgetState = WidgetStateType.initializing;
+  final widgetState = ValueNotifier(WidgetStateType.initializing);
 
   @override
   void initState() {
     super.initState();
     if (initWithSubscription) {
       onCreate();
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
         subscribeNavigatorObserver();
         onStart();
       });
@@ -25,12 +27,11 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
   void subscribeNavigatorObserver() {
     final route = ModalRoute.of(context);
     if (route != null) {
-      getNavigatorObserver().subscribe(this, ModalRoute.of(context));
+      getNavigatorObserver()?.subscribe(this, route);
     }
-    onWidgetStateChange(WidgetStateType.visible);
   }
 
-  RouteObserver getNavigatorObserver();
+  NavigationObserver getNavigatorObserver();
 
   /// State is created but BuildContext is still not initialized
   /// Here we can initialize subscriptions
@@ -40,29 +41,36 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
   /// Here we can call BLoC startup
   void onStart() {}
 
-  @protected
   @mustCallSuper
   void onWidgetStateChange(WidgetStateType state) {
-    widgetState = state;
+    widgetState.value = state;
   }
 
   /// Subscribe Function to Stream and Act when State is visible in foreground
   void streamSubscribeFn<T>(Stream<T> stream, Function(T) fn) {
     addSubscription(stream.listen((event) {
-      if (widgetState == WidgetStateType.visible) {
+      if (widgetState.value == WidgetStateType.visible) {
         fn(event);
       }
     }));
   }
 
   @override
-  @protected
   void didPopNext() {
     onWidgetStateChange(WidgetStateType.visible);
   }
 
   @override
-  @protected
+  void didPush() {
+    onWidgetStateChange(WidgetStateType.visible);
+  }
+
+  @override
+  void didPop() {
+    onWidgetStateChange(WidgetStateType.invisible);
+  }
+
+  @override
   void didPushNext() {
     onWidgetStateChange(WidgetStateType.invisible);
   }
@@ -71,7 +79,7 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
   @mustCallSuper
   void dispose() {
     onWidgetStateChange(WidgetStateType.destroying);
-    getNavigatorObserver().unsubscribe(this);
+    getNavigatorObserver()?.unsubscribe(this);
     super.cancelSubscriptions();
     super.dispose();
   }
