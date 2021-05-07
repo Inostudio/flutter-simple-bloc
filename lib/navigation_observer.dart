@@ -17,8 +17,8 @@ class NavigationObserver extends NavigatorObserver {
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
-    _listeners[previousRoute]?.didPop();
-    _listeners[route]?.didPopNext();
+    _listeners[route]?.didPop();
+    _listeners[previousRoute]?.didPopNext();
   }
 
   @override
