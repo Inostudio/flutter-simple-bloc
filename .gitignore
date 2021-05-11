@@ -2,3 +2,4 @@
 *.lock
 .dart_tool
 .packages
+build

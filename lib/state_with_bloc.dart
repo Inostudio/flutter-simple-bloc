@@ -26,6 +26,7 @@ abstract class StateWithBloc<A extends StatefulWidget, B extends BlocBase>
   }
 
   @override
+  @mustCallSuper
   void onWidgetStateChange(WidgetStateType state) {
     super.onWidgetStateChange(state);
     bloc.onWidgetStateChange(state);
