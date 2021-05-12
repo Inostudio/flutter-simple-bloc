@@ -14,10 +14,10 @@ abstract class StateWithBloc<A extends StatefulWidget, B extends BlocBase>
   @override
   void initState() {
     super.initState();
-    if (BlocProvider.of(context) == null) {
+    if (BlocProvider.of<B>(context) == null) {
       throw Exception("Bloc can't be null!");
     }
-    bloc = BlocProvider.of(context)!;
+    bloc = BlocProvider.of<B>(context)!;
     onCreate();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       subscribeNavigatorObserver();
