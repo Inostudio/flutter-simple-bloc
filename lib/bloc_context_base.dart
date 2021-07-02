@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'extension/extension_subscription.dart';
+import 'util/subscription_mixin.dart';
 import 'bloc_base.dart';
 
-abstract class BlocContextBase<T extends BlocBase> with ExtensionSubscription {
+abstract class BlocContextBase<T extends BlocBase> with SubscriptionMixin {
   void subscribe(T bloc, BuildContext Function() contextFn);
 
   @mustCallSuper

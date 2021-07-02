@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:async/async.dart';
-import 'extension/extension_subscription.dart';
+import 'util/subscription_mixin.dart';
 import 'widget_state_type.dart';
 
-abstract class BlocBase with ExtensionSubscription {
+abstract class BlocBase with SubscriptionMixin {
   final List<CancelableOperation> _workers = [];
   @protected
   WidgetStateType widgetState = WidgetStateType.initializing;

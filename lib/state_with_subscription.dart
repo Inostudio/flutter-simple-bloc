@@ -1,11 +1,11 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
-import 'extension/extension_subscription.dart';
+import 'util/subscription_mixin.dart';
 import 'navigation_observer.dart';
 import 'widget_state_type.dart';
 
 abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
-    with ExtensionSubscription, RouteAware {
+    with SubscriptionMixin, RouteAware {
   @protected
   final initWithSubscription = true;
 

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-abstract class ExtensionSubscription {
+mixin SubscriptionMixin {
   final List<StreamSubscription> _cleanUpSubscribers = [];
 
   void addSubscription(StreamSubscription subscription) {

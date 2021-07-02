@@ -8,3 +8,4 @@ export 'state_with_bloc.dart';
 export 'state_with_subscription.dart';
 export 'widget_state_type.dart';
 export 'navigation_observer.dart';
+export 'util/subscription_mixin.dart';
