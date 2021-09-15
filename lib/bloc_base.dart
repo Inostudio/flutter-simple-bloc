@@ -57,13 +57,17 @@ abstract class BlocBase with SubscriptionMixin {
     return result.future;
   }
 
-  void dispose() {
+  void cancelWorkers() {
     _workers.forEach((worker) {
       if (worker.isCanceled == false) {
         worker.cancel();
       }
     });
     _workers.clear();
+  }
+
+  void dispose() {
+    cancelWorkers();
     cancelSubscriptions();
   }
 }
