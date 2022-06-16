@@ -19,7 +19,7 @@ abstract class StateWithBloc<A extends StatefulWidget, B extends BlocBase>
     }
     bloc = BlocProvider.of<B>(context)!;
     onCreate();
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       subscribeNavigatorObserver();
       onStart();
     });

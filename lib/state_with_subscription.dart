@@ -17,7 +17,7 @@ abstract class StateWithSubscription<A extends StatefulWidget> extends State<A>
     super.initState();
     if (initWithSubscription) {
       onCreate();
-      SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
         subscribeNavigatorObserver();
         onStart();
       });
